@@ -5,22 +5,27 @@
 </mat-toolbar>
 
 <p> {{user | json}}</p>
-<form novalidate (ngSubmit)="onSubmit()">
+<form novalidate #loginForm="ngForm" (ngSubmit)="onSubmit()">
 <mat-dialog-content>
 <p>
 <mat-form-field>
-<input MatInput placeholder="username" type="text" [(ngModel)]="user.username" name="username">
+<input MatInput placeholder="username" type="text" [(ngModel)]="user.username" name="username" class="form-control"
+#username="ngModel" required >
+<div *ngIf="username.errors?.required">Username</div>
+
 </mat-form-field>
 <mat-form-field>
-<input MatInput placeholder="password" type="password" [(ngModel)]="user.password" name="password">
+<input MatInput placeholder="password" type="password" [(ngModel)]="user.password" name="password" class="form-control"
+#password="ngModel" required>
+<div *ngIf="password.errors?.required" class="alert alert-danger">Password</div>
 </mat-form-field>
 <mat-checkbox [(ngModel)]="user.remember" name="remember">Remember Me</mat-checkbox>
-</p>
 </mat-dialog-content>
 <mat-dialog-actions>
     <span class="flex-spacer"></span>
     <button mat-button mat-dialog-close>Cancel</button>
-    <button type="submit" mat-button class="background-primary text-floral-white" >Login</button>
+    <button type="submit" mat-button class="background-primary text-floral-white"
+      [disabled]="!loginForm.form.valid" >Login</button>
 
 </mat-dialog-actions>
 
